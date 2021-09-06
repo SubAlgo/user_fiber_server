@@ -15,13 +15,18 @@ func Migration() (err error) {
 		return err
 	}
 	// init department
-	department := model.Department{Title: "Management"}
+	department := model.Department{Title: "Manager"}
 	if err = DB.Create(&department).Error; err != nil {
 		return err
 	}
 
-	role := model.Role{Code: "1", Title: "Admin"}
-	if err = DB.Create(&role).Error; err != nil {
+	roleAdmin := model.Role{Code: "1", Title: "Admin"}
+	if err = DB.Create(&roleAdmin).Error; err != nil {
+		return err
+	}
+
+	roleUser := model.Role{Code: "2", Title: "User"}
+	if err = DB.Create(&roleUser).Error; err != nil {
 		return err
 	}
 
@@ -31,7 +36,7 @@ func Migration() (err error) {
 		Password:     pass,
 		Name:         "admin",
 		Lastname:     "-",
-		RoleCode:     role.Code,
+		RoleCode:     roleAdmin.Code,
 		DepartmentID: 1,
 		Salary:       50000.00,
 	}
