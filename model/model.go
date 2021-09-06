@@ -3,19 +3,21 @@ package model
 import "gorm.io/gorm"
 
 type User struct {
-	ID           uint   `gorm:"primarykey"`
-	Name         string `gorm:"not null"`
-	Lastname     string `gorm:"not null"`
-	Phone        []Phone
-	RoleCode     string     `gorm:"not null"`
-	Role         Role       `gorm:"references:Code"`
-	DepartmentID int        `gorm:"not null"`
-	Salary       float64    `gorm:"not null"`
-	Department   Department `gorm:"foreignKey:DepartmentID"`
+	ID           uint       `json:"id" gorm:"primarykey"`
+	Email        string     `json:"email" gorm:"not null"`
+	Password     []byte     `json:"password" gorm:"not null"`
+	Name         string     `json:"name" gorm:"not null"`
+	Lastname     string     `json:"lastname" gorm:"not null"`
+	Phone        []Phone    `json:"phone"`
+	RoleCode     string     `json:"roleCode" gorm:"not null"`
+	Role         Role       `json:"role" gorm:"references:Code"`
+	DepartmentID int        `json:"departmentID" gorm:"not null"`
+	Salary       float64    `json:"salary" gorm:"not null"`
+	Department   Department `json:"department" gorm:"foreignKey:DepartmentID"`
 }
 
 type Phone struct {
-	gorm.Model
+	ID      uint   `json:"id" gorm:"primarykey"`
 	PhoneNo string `gorm:"not null"`
 	UserID  uint   `gorm:"not null"`
 }
