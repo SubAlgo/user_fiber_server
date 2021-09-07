@@ -14,7 +14,7 @@ func Migration() (err error) {
 	if err = DB.AutoMigrate(&model.User{}, &model.Department{}, &model.Role{}, &model.Phone{}); err != nil {
 		return err
 	}
-	// init department
+	// init department data
 	department := model.Department{Title: "Manager"}
 	if err = DB.Create(&department).Error; err != nil {
 		return err
@@ -30,6 +30,7 @@ func Migration() (err error) {
 		return err
 	}
 
+	// init admin user
 	pass, _ := password.Hash("123456")
 	user := model.User{
 		Email:        "admin@gmail.com",
