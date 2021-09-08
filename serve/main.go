@@ -3,8 +3,9 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/subAlgo/userFiber/controllers/authController"
+	"github.com/subAlgo/userFiber/Middleware"
 	"github.com/subAlgo/userFiber/database"
+	"github.com/subAlgo/userFiber/routes/authRoute"
 )
 
 func main() {
@@ -15,13 +16,17 @@ func main() {
 
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
+		AllowHeaders:     "Content-Type",
 	}))
+
+	app.Use(Middleware.CheckContentType)
 
 	//routes.Setup(app)
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("root")
 	})
-	app.Post("/api/signup", authController.Signup)
+	//app.Post("/api/signup", authController.Signup)
+	authRoute.Handle(app)
 	app.Listen(":3000")
 }
 

@@ -1,5 +1,5 @@
 migrate:
 	go run migrate/main.go
 
-serve:
+dev:
 	go run serve/main.go
