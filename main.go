@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/subAlgo/userFiber/database"
-	"github.com/subAlgo/userFiber/routes/authRoute"
 )
 
 func main() {
@@ -27,6 +26,6 @@ func main() {
 	}))
 
 	//routes.Setup(app)
-	authRoute.Handler(app)
+	//authRoute.Handler(app)
 	app.Listen(":8000")
 }

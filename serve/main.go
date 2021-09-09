@@ -3,34 +3,35 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/subAlgo/userFiber/Middleware"
 	"github.com/subAlgo/userFiber/database"
+	"github.com/subAlgo/userFiber/middleware"
+	"github.com/subAlgo/userFiber/routes/adminRoute"
 	"github.com/subAlgo/userFiber/routes/authRoute"
+	"github.com/subAlgo/userFiber/routes/userRoute"
+	"log"
 )
 
 func main() {
 
-	database.Connect()
+	if err := database.Connect(); err != nil {
+		log.Fatal(err)
+	}
+	sqlDB, _ := database.DB.DB()
+	defer sqlDB.Close()
 
 	app := fiber.New()
-
-	app.Use(cors.New(cors.Config{
-		AllowCredentials: true,
-		AllowHeaders:     "Content-Type",
-	}))
-
-	app.Use(Middleware.CheckContentType)
-
-	//routes.Setup(app)
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("root")
 	})
-	//app.Post("/api/signup", authController.Signup)
-	authRoute.Handle(app)
-	app.Listen(":3000")
-}
-
-type Person struct {
-	Name string `json:"name" xml:"name" form:"name"`
-	Pass string `json:"pass" xml:"pass" form:"pass"`
+	// apiGroup install main middleware
+	apiGroup := app.Group("/api", middleware.CheckHeader, cors.New(cors.Config{
+		AllowCredentials: true,
+		AllowHeaders:     "Content-Type",
+	}))
+	authRoute.Handle(app, apiGroup)
+	userRoute.Handle(app, apiGroup)
+	adminRoute.Handle(app, apiGroup)
+	if err := app.Listen(":3000"); err != nil {
+		log.Fatal(err)
+	}
 }
