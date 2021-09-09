@@ -28,7 +28,7 @@
 ###Method:
     POST
 ###Body:
-    {
+    `{
         "name": "",
         "lastname": "",
         "email": "",
@@ -36,7 +36,7 @@
         "confirmPassword": "",
         "salary": floatType,
         "phone": ""
-    }
+    }`
 <hr>
 
 ## Auth API: sign in
